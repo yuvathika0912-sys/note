@@ -1,0 +1,37 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "arun",
+      "password": "arun123"
+    },
+    {
+      "username": "ajay",
+      "password": "1234",
+      "id": "PoUPqLaUa9Y"
+    },
+    {
+      "id": "ogDY7iIgksA",
+      "username": "yuva",
+      "password": "1234"
+    }
+  ],
+  "notes": [
+    {
+      "id": "VntMxHQFJCY",
+      "text": "hi",
+      "userId": "ajay"
+    },
+    {
+      "id": "pj-hH_GLisk",
+      "text": "hello good morning",
+      "userId": "yuva"
+    },
+    {
+      "id": "s8qJ3D1shYA",
+      "text": "hi im arun",
+      "userId": "arun"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

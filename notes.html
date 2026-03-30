@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Notes App</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: linear-gradient(135deg, #06b6d4, #2563eb);
+      color: white;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .create-btn {
+      background: #22c55e;
+      padding: 12px 20px;
+      border-radius: 25px;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .note-input {
+      display: none;
+      margin-top: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      border-radius: 10px;
+      padding: 10px;
+      border: none;
+    }
+
+    .save-btn {
+      margin-top: 10px;
+      padding: 10px;
+      width: 100%;
+      background: #22c55e;
+      border: none;
+      border-radius: 10px;
+      color: white;
+    }
+
+    .notes-container {
+      max-width: 600px;
+      margin: 30px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .card {
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 10px;
+      position: relative;
+      min-height: 100px;
+    }
+
+    .icons {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon {
+      cursor: pointer;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>📒 Notes</h1>
+
+<button class="create-btn" onclick="showInput()">✏️ Create Notes</button>
+
+<div class="note-input" id="inputBox">
+  <textarea id="noteText" placeholder="Write note..."></textarea>
+  <button class="save-btn" onclick="addNote()">Save</button>
+</div>
+
+<div class="notes-container" id="notes"></div>
+
+<script>
+const API = "http://localhost:3000";
+const user = JSON.parse(localStorage.getItem("user"));
+
+if (!user) {
+  alert("Login first");
+  window.location.href = "login.html";
+}
+
+function showInput() {
+  document.getElementById("inputBox").style.display = "block";
+}
+
+// LOAD
+async function loadNotes() {
+  const res = await fetch(API + "/notes");
+  const data = await res.json();
+
+  const myNotes = data.filter(n => n.userId === user.username).reverse();
+
+  const container = document.getElementById("notes");
+  container.innerHTML = "";
+
+  myNotes.forEach(n => {
+    const div = document.createElement("div");
+    div.className = "card";
+
+    const text = document.createElement("div");
+    text.innerText = n.text;
+
+    const icons = document.createElement("div");
+    icons.className = "icons";
+
+    const edit = document.createElement("span");
+    edit.innerText = "✏️";
+    edit.className = "icon";
+    edit.onclick = () => editNote(n.id, n.text);
+
+    const del = document.createElement("span");
+    del.innerText = "🗑️";
+    del.className = "icon";
+    del.onclick = () => deleteNote(n.id);
+
+    icons.appendChild(edit);
+    icons.appendChild(del);
+
+    div.appendChild(text);
+    div.appendChild(icons);
+
+    container.appendChild(div);
+  });
+
+  localStorage.setItem("notes", JSON.stringify(myNotes));
+}
+
+// ADD
+async function addNote() {
+  const text = document.getElementById("noteText").value;
+  if (!text) return;
+
+  const res = await fetch(API + "/notes");
+  const notes = await res.json();
+
+  const newId = notes.length ? notes[notes.length - 1].id + 1 : 1;
+
+  await fetch(API + "/notes", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      id: newId,
+      text,
+      userId: user.username
+    })
+  });
+
+  noteText.value = "";
+  inputBox.style.display = "none";
+
+  loadNotes();
+}
+
+// EDIT
+async function editNote(id, oldText) {
+  const newText = prompt("Edit:", oldText);
+  if (!newText) return;
+
+  await fetch(API + "/notes/" + id, {
+    method: "PATCH",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ text: newText })
+  });
+
+  loadNotes();
+}
+
+// DELETE
+async function deleteNote(id) {
+  await fetch(API + "/notes/" + id, {
+    method: "DELETE"
+  });
+
+  loadNotes();
+}
+
+loadNotes();
+
+localStorage.setItem('name', 'John Doe');
+</script>
+</body>
+</html>

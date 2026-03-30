@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+<body>
+
+<h2>Login</h2>
+
+<input id="username" placeholder="Username"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+
+<button onclick="login()">Login</button>
+
+<p>New user? <a href="register.html">Register</a></p>
+
+<script>
+const API = "http://localhost:3000";
+
+async function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const res = await fetch(API + "/users");
+  const users = await res.json();
+
+  const user = users.find(u => u.username === username);
+
+  if (!user) {
+    alert("User not found! Register first.");
+    window.location.href = "register.html";
+    return;
+  }
+
+  if (user.password === password) {
+    alert("Login successful");
+
+    localStorage.setItem("user", JSON.stringify({
+      username: user.username
+    }));
+
+    window.location.href = "notes.html";
+
+  } else {
+    alert("Check username or password");
+  }
+}
+</script>
+
+</body>
+</html>
