@@ -1,0 +1,71 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "arun",
+      "password": "arun@123"
+    },
+    {
+      "id": "2",
+      "username": "ajay",
+      "password": "ajay123"
+    },
+    {
+      "id": "3",
+      "username": "pooja",
+      "password": "pooja123"
+    },
+    {
+      "id": "4",
+      "username": "ravi",
+      "password": "ravi123"
+    }
+  ],
+  "notes": [
+    {
+      "id": "text1",
+      "userId": "arun_1",
+      "text": "Arun first note"
+    },
+    {
+      "id": "text2",
+      "userId": "arun_1",
+      "text": "Arun second note"
+    },
+    {
+      "id": "text3",
+      "userId": "ajay_2",
+      "text": "Ajay first note"
+    },
+    {
+      "id": "text4",
+      "userId": "ajay_2",
+      "text": "Ajay second note"
+    },
+    {
+      "id": "text5",
+      "userId": "pooja_3",
+      "text": "Pooja first note"
+    },
+    {
+      "id": "text6",
+      "userId": "ajay_2",
+      "text": "ajay thir notes checking"
+    },
+    {
+      "id": "text7",
+      "userId": "ravi_4",
+      "text": "im ravi final checking add"
+    },
+    {
+      "id": "text8",
+      "userId": "ravi_4",
+      "text": "ravi second notes"
+    },
+    {
+      "id": "text9",
+      "userId": "ravi_4",
+      "text": "edited success"
+    }
+  ]
+}
